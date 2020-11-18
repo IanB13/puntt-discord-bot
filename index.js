@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const TOKEN = process.env.TOKEN;
 const mongoose = require("mongoose")
-const scrapeEvents = require("./utils/scrapeEvents")
+
 const fs = require('fs');
 
 bot.commands = new Discord.Collection();
@@ -39,23 +39,20 @@ bot.on('message', msg => {
     if (command === 'ping') {
       bot.commands.get('ping').execute(msg, args);
     } 
+    else if(command === 'update'){
+      bot.commands.get('update').execute(msg, args);
+    }
+    else if(command === 'hi'){
+      bot.commands.get('events').execute(msg, args);
+    }
     else if (msg.content.startsWith('!kick')) {
       if (msg.mentions.users.size) {
         const taggedUser = msg.mentions.users.first();
         msg.channel.send(`You wanted to kick: ${taggedUser.username}`);
       }
     }
-    else if (msg.content === 'update') {
-
-      msg.reply("Starting Scrape");
-      (async()=>{
-        console.log("in asc")
-        const events = await scrapeEvents()
-        console.log( events)
-      })()
-
-    }
-
 });
+
+
 
 bot.login(TOKEN);
