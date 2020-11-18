@@ -1,9 +1,10 @@
 const puppeteer = require('puppeteer');
+const Event = require('../models/Event')
 
-
-const scrape = async () =>{
+const scrapeEvents = async () =>{
+    console.log("IN event scraping")
     const browser = await puppeteer.launch({
-        headless: false , 
+        headless: true , 
         defaultViewport: {width: 1920, height: 2000} //for larger screen shots 
     });
 
@@ -14,16 +15,17 @@ const scrape = async () =>{
     await page.waitForSelector(".match-widget")
 
 
-    const events = await page.evaluate( () => {
+
+    const events = await page.evaluate(() => {
         const events = []
         const eventList = document.querySelectorAll(".match-widget")
-        console.log(eventList)
+   
         const eventsArray = Array.from(eventList)
-        console.log(eventsArray[0])
-        for(const eventNode of eventsArray){
+
+        for (const eventNode of eventsArray) {
             const event = {}
-            for(const eventChild of eventNode.children){
-                
+            for (const eventChild of eventNode.children) {
+
                 switch (eventChild.className) {
                     case "match-widget__name":
                         event.name = eventChild.innerText
@@ -32,10 +34,10 @@ const scrape = async () =>{
                         event.tournament = eventChild.innerText
                         break;
                     case "match-widget__actions":
-                        console.log(eventChild)
+                        event.liveLink = eventChild.children[1].getAttribute('href')
                         break;
                     case "match-widget__datetime":
-                        event.dateTime =  Date.parse(eventChild.children[0].getAttribute('datetime'))
+                        event.dateTime = Date.parse(eventChild.children[0].getAttribute('datetime'))
                         break;
                     default:
                         break;
@@ -43,10 +45,14 @@ const scrape = async () =>{
             }
             events.push(event)
         }
-         return events
-     })
-    console.log(events)
+
+        return events
+    })
     
+    console.log(events)
+    await Event.deleteMany({})
+    await Event.insertMany(events)
+    return await Event.find({})
 }
-scrape()
-module.exports = scrape
+
+module.exports = scrapeEvents
