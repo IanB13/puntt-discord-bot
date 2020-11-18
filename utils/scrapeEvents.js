@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const Event = require('../models/Event')
 
 const scrapeEvents = async () =>{
-    console.log("IN event scraping")
     const browser = await puppeteer.launch({
         headless: true , 
         defaultViewport: {width: 1920, height: 2000} //for larger screen shots 
@@ -24,8 +23,8 @@ const scrapeEvents = async () =>{
 
         for (const eventNode of eventsArray) {
             const event = {}
+            event.link = `https://puntt.gg${eventNode.parentElement.getAttribute('href')}`
             for (const eventChild of eventNode.children) {
-
                 switch (eventChild.className) {
                     case "match-widget__name":
                         event.name = eventChild.innerText
@@ -48,11 +47,10 @@ const scrapeEvents = async () =>{
 
         return events
     })
-    
-    console.log(events)
+    browser.close()
     await Event.deleteMany({})
     await Event.insertMany(events)
     return await Event.find({})
 }
-
+scrapeEvents()
 module.exports = scrapeEvents
