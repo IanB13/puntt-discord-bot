@@ -5,11 +5,27 @@ module.exports = {
 	name: 'events',
 	description: 'displays events',
 	execute(message, args ) {
-    
-            const exampleEmbed = new Discord.MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle('Some title') 
-            console.log("in")
-            message.channel.send(exampleEmbed)
+            ( async ()=>{
+                const eventsEmbed = new Discord.MessageEmbed()
+                .setColor('#14ecd2')
+                .setTitle('Matches')
+                .setURL("https://puntt.gg/matches")
+                const events = await Events.find()
+                const fithDate = events[4].dateTime
+                const firstFiveEvents = events.filter(event=> event.dateTime <= fithDate)
+                for(const event of firstFiveEvents){
+                    const {name, tournament,dateTime} = event 
+
+                    eventsEmbed
+                        .addField(name, tournament,true)
+                        .addField("Starts at:", dateTime,true )
+                        .addField('\u200B','\u200B', true)
+                }   
+
+                eventsEmbed.setFooter
+                message.channel.send(eventsEmbed)
+                
+            })()
+
 	},
 };
