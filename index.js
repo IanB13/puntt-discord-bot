@@ -42,8 +42,8 @@ bot.on('message', msg => {
     else if(command === 'update'){
       bot.commands.get('update').execute(msg, args);
     }
-    else if(command === 'hi'){
-      bot.commands.get('events').execute(msg, args);
+    else if(command === 'matches'){
+      bot.commands.get('matches').execute(msg, args);
     }
     else if (msg.content.startsWith('!kick')) {
       if (msg.mentions.users.size) {

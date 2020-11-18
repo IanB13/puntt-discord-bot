@@ -2,7 +2,7 @@ const Events = require("../models/Event")
 const Discord = require('discord.js');
 
 module.exports = {
-	name: 'events',
+	name: 'matches',
 	description: 'displays events',
 	execute(message, args ) {
             ( async ()=>{
