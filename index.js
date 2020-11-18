@@ -4,7 +4,15 @@ const bot = new Discord.Client();
 const TOKEN = process.env.TOKEN;
 const mongoose = require("mongoose")
 const scrapeEvents = require("./utils/scrapeEvents")
-bot.login(TOKEN);
+const fs = require('fs');
+
+bot.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	bot.commands.set(command.name, command);
+}
 
  const uri =  process.env.MONGODB_URI
 mongoose.connect(uri, { useNewUrlParser: true,useUnifiedTopology: true  }).then(() => {
@@ -19,16 +27,18 @@ bot.on('ready', () => {
   console.info(`Logged in as ${bot.user.tag}!`);
 });
 
+const prefix = '!!' // TODO: put in config
+
 bot.on('message', msg => {
-  if (!msg.author.bot) {
+    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+ 
     // Do something if message doesn't come from a bot.
-
-    if (msg.content === 'ping') {
-      console.log('pinged')
-      msg.reply('pong');
-      msg.channel.send('pong');
-
-    }
+    const args = msg.content.slice(prefix.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
+    
+    if (command === 'ping') {
+      bot.commands.get('ping').execute(msg, args);
+    } 
     else if (msg.content.startsWith('!kick')) {
       if (msg.mentions.users.size) {
         const taggedUser = msg.mentions.users.first();
@@ -45,7 +55,7 @@ bot.on('message', msg => {
       })()
 
     }
-  }
 
 });
 
+bot.login(TOKEN);
