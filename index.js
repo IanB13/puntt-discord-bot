@@ -1,11 +1,10 @@
-require('dotenv').config();
 const Discord = require('discord.js');
-const bot = new Discord.Client();
-const TOKEN = process.env.DISCORD_TOKEN; // TODO: put in config
+const config = require('./utils/config')
 const mongoose = require("mongoose")
-
 const fs = require('fs');
 
+const bot = new Discord.Client();
+const TOKEN = config.DISCORD_TOKEN; 
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -14,21 +13,12 @@ for (const file of commandFiles) {
 	bot.commands.set(command.name, command);
 }
 
-const uri =  process.env.MONGODB_URI // TODO: put in config
-
-mongoose.connect(uri, { useNewUrlParser: true,useUnifiedTopology: true  }).then(() => {
-  console.log(`connected at ${uri}`)
-}
-).catch( error => {
-  console.error(error)
-}); 
-
 
 bot.on('ready', () => {
   console.info(`Logged in as ${bot.user.tag}!`);
 });
 
-const prefix = '!!' // TODO: put in config
+const prefix = config.prefix
 
 bot.on('message', message => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -47,6 +37,13 @@ bot.on('message', message => {
 
 });
 
+const uri =  config.MONGODB_URI 
+mongoose.connect(uri, { useNewUrlParser: true,useUnifiedTopology: true  }).then(() => {
+  console.log(`connected at ${uri}`)
+}
+).catch( error => {
+  console.error(error)
+}); 
 
 
 bot.login(TOKEN);
