@@ -45,10 +45,5 @@ const scrapeOdds = async (link) =>{
 
 
 }
-(async()=>{
-const scrape = await scrapeOdds('https://puntt.gg/matches/csgo-iem-beijing-online-north-america-2020-chaos-vs-evil-geniuses-0a279e/phhyli2nqjzv')
-console.log(scrape)
-})()
-
 
 module.exports = scrapeOdds
