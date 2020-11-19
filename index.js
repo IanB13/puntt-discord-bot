@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-const TOKEN = process.env.TOKEN; // TODO: put in config
+const TOKEN = process.env.DISCORD_TOKEN; // TODO: put in config
 const mongoose = require("mongoose")
 
 const fs = require('fs');

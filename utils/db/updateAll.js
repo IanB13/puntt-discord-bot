@@ -5,7 +5,6 @@ const Event = require('../../models/Event')
 
 const updateAll = async() =>{
     const Events = await scrapeEvents()
-    console.log(Events)
     const updatedEvents = []
     for(const event of Events){
         const poolTypes = await scrapePoolTypes(event.link)

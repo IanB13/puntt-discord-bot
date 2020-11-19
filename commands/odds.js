@@ -9,9 +9,7 @@ const nextMatch = async () =>{
 }
 
 const findMatch = async (args) =>{
-    console.log(args[0])
     const match = await Events.find({name: new RegExp(args[0], 'i') })
-    console.log(match)
     let msg = ["Match not found, try something else"]
     if(match.length !== 0){
      msg = oddsMsg(match[0].odds[0])
