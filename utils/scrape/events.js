@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const Event = require('../../models/Event')
 
 const scrapeEvents = async () =>{
     const browser = await puppeteer.launch({
@@ -11,8 +10,6 @@ const scrapeEvents = async () =>{
     await page.goto("https://puntt.gg/matches");
 
     await page.waitForSelector(".match-widget")
-
-
 
     const events = await page.evaluate(() => {
         const events = []
@@ -46,11 +43,9 @@ const scrapeEvents = async () =>{
 
         return events
     })
+    
     browser.close()
-    //should seperate out db into seperate module
-    await Event.deleteMany({})
-    await Event.insertMany(events)
-    return await Event.find({})
+    return events
 }
-scrapeEvents()
+
 module.exports = scrapeEvents

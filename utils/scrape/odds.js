@@ -37,13 +37,12 @@ const scrapeOdds = async (link) =>{
             players
         })
     })
+    
+    browser.close()
     return({
         link,
         ...odds
     })
-   browser.close()
-
-
 }
 
 module.exports = scrapeOdds
