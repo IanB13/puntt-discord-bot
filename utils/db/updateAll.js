@@ -14,8 +14,6 @@ const updateAll = async() =>{
         }))
         updatedEvents.push({...event, odds})
     }
-    console.log(updatedEvents[0].odds)
-
     await Event.deleteMany({})
     await Event.insertMany(updatedEvents)
     return await Event.find({})
