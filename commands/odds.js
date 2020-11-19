@@ -8,6 +8,18 @@ const nextMatch = async () =>{
     return msg
 }
 
+const findMatch = async (args) =>{
+    console.log(args[0])
+    const match = await Events.find({name: new RegExp(args[0], 'i') })
+    console.log(match)
+    let msg = ["Match not found, try something else"]
+    if(match.length !== 0){
+     msg = oddsMsg(match[0].odds[0])
+    }
+    return msg
+   
+}
+
 const oddsMsg = (odds) =>{
     const {players,type,link} = odds
 
@@ -28,7 +40,6 @@ const oddsMsg = (odds) =>{
             .setImage('https://puntt.gg/images/puntt-logo-white.svg')
         for (const player of teamPlayers) {
             const { player: name, AI, probBet } = player
-            console.log(name)
             msg
                 .addField(name,'\u200B', true)
                 .addField('Bet:', "AI:", true)
@@ -52,6 +63,13 @@ module.exports = {
                 }
                 else if(args.includes("next")){
                     const msgs = await nextMatch()
+                    for(const msg of msgs){
+                        message.channel.send(msg)
+                    }
+                }
+                else{
+                    const msgs = await findMatch(args)
+
                     for(const msg of msgs){
                         message.channel.send(msg)
                     }
