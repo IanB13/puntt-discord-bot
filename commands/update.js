@@ -1,4 +1,4 @@
-const scrapeEvents = require("../utils/scrapeEvents")
+const updateAll = require("../utils/db/updateAll")
 
 module.exports = {
 	name: 'update',
@@ -6,7 +6,7 @@ module.exports = {
 	execute(message, _args) {
         message.reply("Starting Update");
         (async()=>{
-          await scrapeEvents()
+          await updateAll()
         message.reply("update completed")
         })()
 	},
