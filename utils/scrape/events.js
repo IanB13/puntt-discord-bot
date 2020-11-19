@@ -47,5 +47,9 @@ const scrapeEvents = async () =>{
     browser.close()
     return events
 }
+/* (async()=>{
+   x = await scrapeEvents()
+   console.log(x)
+})() */
 
 module.exports = scrapeEvents
