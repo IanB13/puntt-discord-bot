@@ -1,15 +1,19 @@
 ## discord bot for punt
 This bot shows upcoming matches and odds for Puntt, the home of esports betting pools for CS:GO and League of Legends
 
+
+### bot URL
+https://discord.com/oauth2/authorize?client_id=778979252342751232&permissions=67584&scope=bot
+
 ## commands
 
-| Command        | Description  | arguments|
-| :------------- | :----------: | -----------: |
-| !!ping         | messages pong | none                        |
-| !!update       | scrapes punt website to update  | none    |
-| !!matches      | Gets first 5 matches | none                        |
-| !!odds         | gets odds based on args | next or event name to query |
+| Commands | Description |
+|-|-|
+| !!matches | gets first 5 matches |
+| !!odds | gets odds for requested event |
+| !!update | Updates database |
+| !!ping | Messages Pong back |
 
+## info
 
-### URL to get bot
-https://discord.com/oauth2/authorize?client_id=778979252342751232&permissions=67584&scope=bot
+This bot is written in javascript and uses mongodb and puppetter for webscraping. 
