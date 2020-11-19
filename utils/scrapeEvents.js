@@ -3,8 +3,7 @@ const Event = require('../models/Event')
 
 const scrapeEvents = async () =>{
     const browser = await puppeteer.launch({
-        headless: true , 
-        defaultViewport: {width: 1920, height: 2000} //for larger screen shots 
+        headless: true 
     });
 
     const page = await browser.newPage();
@@ -48,6 +47,7 @@ const scrapeEvents = async () =>{
         return events
     })
     browser.close()
+    //should seperate out db into seperate module
     await Event.deleteMany({})
     await Event.insertMany(events)
     return await Event.find({})
