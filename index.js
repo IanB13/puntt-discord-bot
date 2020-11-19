@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-const TOKEN = process.env.TOKEN;
+const TOKEN = process.env.TOKEN; // TODO: put in config
 const mongoose = require("mongoose")
 
 const fs = require('fs');
@@ -14,7 +14,8 @@ for (const file of commandFiles) {
 	bot.commands.set(command.name, command);
 }
 
- const uri =  process.env.MONGODB_URI
+const uri =  process.env.MONGODB_URI // TODO: put in config
+
 mongoose.connect(uri, { useNewUrlParser: true,useUnifiedTopology: true  }).then(() => {
   console.log(`connected at ${uri}`)
 }
@@ -29,28 +30,21 @@ bot.on('ready', () => {
 
 const prefix = '!!' // TODO: put in config
 
-bot.on('message', msg => {
-    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
- 
-    // Do something if message doesn't come from a bot.
-    const args = msg.content.slice(prefix.length).trim().split(/ +/);
-    const command = args.shift().toLowerCase();
-    
-    if (command === 'ping') {
-      bot.commands.get('ping').execute(msg, args);
-    } 
-    else if(command === 'update'){
-      bot.commands.get('update').execute(msg, args);
-    }
-    else if(command === 'matches'){
-      bot.commands.get('matches').execute(msg, args);
-    }
-    else if (msg.content.startsWith('!kick')) {
-      if (msg.mentions.users.size) {
-        const taggedUser = msg.mentions.users.first();
-        msg.channel.send(`You wanted to kick: ${taggedUser.username}`);
-      }
-    }
+bot.on('message', message => {
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+  const args = message.content.slice(prefix.length).trim().split(/ +/);
+  const command = args.shift().toLowerCase();
+
+  if (!bot.commands.has(command)) return;
+
+  try {
+    bot.commands.get(command).execute(message, args);
+  } catch (error) {
+    console.error(error);
+    message.reply('there was an error trying to execute that command!');
+  }
+
 });
 
 
