@@ -33,7 +33,7 @@ const prefix = '!!' // TODO: put in config
 bot.on('message', message => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-  const args = message.content.slice(prefix.length).trim().split(/ +/);
+  const args = message.content.slice(prefix.length).toLowerCase().trim().split(/ +/);
   const command = args.shift().toLowerCase();
 
   if (!bot.commands.has(command)) return;

@@ -7,9 +7,9 @@ module.exports = {
 	execute(message, args ) {
             ( async ()=>{
                 const eventsEmbed = new Discord.MessageEmbed()
-                .setColor('#14ecd2')
-                .setTitle('Matches')
-                .setURL("https://puntt.gg/matches")
+                    .setColor('#14ecd2')
+                    .setTitle('Matches')
+                    .setURL("https://puntt.gg/matches")
                 const events = await Events.find()
                 const fithDate = events[4].dateTime
                 const firstFiveEvents = events.filter(event=> event.dateTime <= fithDate)
