@@ -1,14 +1,16 @@
 const mongoose = require("mongoose")
 
 //no id as using mongoDB ID
-const customerSchema = new mongoose.Schema({
+const eventSchema = new mongoose.Schema({
     name: String,
     tournament:String,
-    dateTime: Date
+    dateTime: Date,
+    link: String,
+    odds: {}
 
 })
 
-customerSchema.set("toJSON", {
+eventSchema.set("toJSON", {
     transform: (_document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject.__v
@@ -17,6 +19,6 @@ customerSchema.set("toJSON", {
 })
 
 
-const Customer = mongoose.model("Customer", customerSchema)
+const Event = mongoose.model("Matches", eventSchema)
 
-module.exports = Customer
+module.exports = Event
