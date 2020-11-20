@@ -6,8 +6,13 @@ module.exports = {
 	execute(message, _args) {
         message.reply("Starting Update");
         (async()=>{
+          try {
+            
           await updateAll()
-        message.reply("update completed")
+          message.reply("update completed")
+        } catch (error) {
+            message.reply("error occured in update")
+        }
         })()
 	},
 };

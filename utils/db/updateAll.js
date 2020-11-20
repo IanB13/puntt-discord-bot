@@ -4,6 +4,7 @@ const scrapePoolTypes = require('../scrape/poolTypes')
 const Event = require('../../models/Event')
 
 const updateAll = async() =>{
+    try {
     const Events = await scrapeEvents()
     const updatedEvents = []
     for (const event of Events) {
@@ -18,9 +19,18 @@ const updateAll = async() =>{
             updatedEvents.push({ ...event, odds })
         }
     }
-    await Event.deleteMany({})
-    await Event.insertMany(updatedEvents)
-    return await Event.find({})
+    } catch (error) {
+        console.error("error in web scraping")
+        console.error(error)
+    }
+    try {
+        await Event.deleteMany({})
+        await Event.insertMany(updatedEvents)
+        return await Event.find({})
+    } catch (error) {
+        console.error("database Error")
+        console.error(error)
+    }
 }
 
 module.exports = updateAll
