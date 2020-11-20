@@ -19,11 +19,6 @@ const updateAll = async() =>{
             updatedEvents.push({ ...event, odds })
         }
     }
-    } catch (error) {
-        console.error("error in web scraping")
-        console.error(error)
-    }
-    try {
         await Event.deleteMany({})
         await Event.insertMany(updatedEvents)
         return await Event.find({})
