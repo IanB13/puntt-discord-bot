@@ -16,23 +16,24 @@ const scrapeEvents = async () =>{
         const eventList = document.querySelectorAll(".match-widget")
    
         const eventsArray = Array.from(eventList)
-
+      
         for (const eventNode of eventsArray) {
+            console.log(eventNode)
             const event = {}
-            event.link = `https://puntt.gg${eventNode.parentElement.getAttribute('href')}`
+            event.link = `https://puntt.gg${eventNode?.parentElement?.getAttribute('href')}`
             for (const eventChild of eventNode.children) {
                 switch (eventChild.className) {
                     case "match-widget__name":
-                        event.name = eventChild.innerText
+                        event.name = eventChild?.innerText
                         break;
                     case "match-widget__tournament":
-                        event.tournament = eventChild.innerText
+                        event.tournament = eventChild?.innerText
                         break;
                     case "match-widget__actions":
-                        event.liveLink = eventChild.children[1].getAttribute('href')
+                        event.liveLink = eventChild?.children[1]?.getAttribute('href')
                         break;
                     case "match-widget__datetime":
-                        event.dateTime = Date.parse(eventChild.children[0].getAttribute('datetime'))
+                        event.dateTime = Date.parse(eventChild?.children[0]?.getAttribute('datetime'))
                         break;
                     default:
                         break;

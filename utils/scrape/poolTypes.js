@@ -8,8 +8,14 @@ const scrapePoolTypes = async (link) =>{
     const page = await browser.newPage();
     
     await page.goto(link);
-
-    await page.waitForSelector(".pool-list__pool")
+    try {
+        await page.waitForSelector(".pool-list__pool")
+    } catch (error) {
+        console.log("SELECTOR TIMEOUT FAILED")
+        console.error(error)
+        return null
+    }
+ 
 
     const poolLinks = await page.evaluate(() => {
         const poolNodes = document.querySelectorAll(".pool-list__pool")

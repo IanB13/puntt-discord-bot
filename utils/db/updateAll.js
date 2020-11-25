@@ -10,7 +10,16 @@ const updateAll = async() =>{
     for (const event of Events) {
         if (event.link !== 'https://puntt.ggnull') {
             console.log(event)
-            const poolTypes = await scrapePoolTypes(event.link)
+            let poolTypes = null
+            try {
+                 poolTypes = await scrapePoolTypes(event.link)
+            } catch (error) {
+                console.log("error in selecting pool type")
+                console.error(error)
+            }
+           
+            if(!poolTypes) continue
+            
             const odds = await Promise.all(poolTypes.map(async (odd) => {
 
                 return await scrapeOdds(odd.link)
